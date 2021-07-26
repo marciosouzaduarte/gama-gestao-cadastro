@@ -34,7 +34,7 @@ export default function Clientes() {
             } else {
                 // Se tiver valor no código edita os dados
                 let lsClients = localStorage.getItem('clientsRepo');
-                let clients = lsClients != null ? JSON.parse(lsClients) : [];
+                var clients = lsClients != null ? JSON.parse(lsClients) : [];
                 if (clients.length > 0 && code !== "") {
                     let index = code - 1;
                     let client = clients[index];
