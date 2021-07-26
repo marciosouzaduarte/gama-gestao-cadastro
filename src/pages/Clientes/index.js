@@ -102,6 +102,11 @@ export default function Clientes() {
             <GS.Conteiner>
                 <form>
                     <GS.Row className="row">
+                        <GS.Col className="col-md-12">
+                            <h2>Cadastro de Clientes</h2>
+                        </GS.Col>
+                    </GS.Row>
+                    <GS.Row className="row">
                         <GS.Col className="col-md-3">
                             <GS.Label>Códio</GS.Label>
                             <GS.InputReadOnly type="text" name="code" value={code} readOnly={true} />
