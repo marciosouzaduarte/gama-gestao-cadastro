@@ -10,7 +10,7 @@ export const Conteiner = styled.div`
 export const Row = styled.div`
     width: 100%;
     border: 0px solid #ddf;
-    margin-top: 5px;
+    margin-top: 8px;
 `
 export const Col = styled.div`
     border: 0px solid #fdd;

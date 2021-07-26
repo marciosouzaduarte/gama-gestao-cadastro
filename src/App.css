@@ -3,5 +3,10 @@
 }
 
 .bt-right {
+    float: right;
     margin-left: 4px !important;
+}
+
+ul li {
+    list-style: none;
 }
