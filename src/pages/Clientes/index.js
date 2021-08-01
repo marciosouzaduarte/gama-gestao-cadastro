@@ -14,6 +14,12 @@ export default function Clientes() {
     const [address, setAddress] = useState('');
     const [clientRepository, setClientRepository] = useState([]);
 
+    useEffect(() => {
+        let lsClients = localStorage.getItem('clientsRepo');
+        let clients = lsClients != null && lsClients.length > 0 ? JSON.parse(lsClients) : [];
+        setClientRepository(clients);
+    }, []);
+
     // Método para limpar os campos do formulário
     function clear() {
         setCode('');
@@ -34,7 +40,7 @@ export default function Clientes() {
             } else {
                 // Se tiver valor no código edita os dados
                 let lsClients = localStorage.getItem('clientsRepo');
-                var clients = lsClients != null ? JSON.parse(lsClients) : [];
+                let clients = lsClients != null && lsClients.length > 0 ? JSON.parse(lsClients) : [];
                 if (clients.length > 0 && code !== "") {
                     let index = code - 1;
                     let client = clients[index];
@@ -58,16 +64,16 @@ export default function Clientes() {
     // Seleciona o cliente
     function select(index) {
         let lsClients = localStorage.getItem('clientsRepo');
-        let clients = lsClients != null ? JSON.parse(lsClients) : [];
+        let clients = lsClients != null && lsClients.length > 0 ? JSON.parse(lsClients) : [];
         let client = clients.filter((element, i) => {
             return index == i;
         });
 
-        setCode(client[0]);
-        setName(client[1]);
-        setEmail(client[2]);
-        setPhone(client[3]);
-        setAddress(client[4]);
+        setCode(client[0][0]);
+        setName(client[0][1]);
+        setEmail(client[0][2]);
+        setPhone(client[0][3]);
+        setAddress(client[0][4]);
 
         handleClose();
     }
@@ -75,7 +81,7 @@ export default function Clientes() {
     // Remove o cliente do array
     function remove(index) {
         let lsClients = localStorage.getItem('clientsRepo');
-        let clients = lsClients != null ? JSON.parse(lsClients) : [];
+        let clients = lsClients != null && lsClients.length > 0 ? JSON.parse(lsClients) : [];
         clients = clients.filter((element, i) => {
             return i != index;
         });
@@ -86,10 +92,10 @@ export default function Clientes() {
     // Modal
     const [show, setShow] = useState(false);
     const handleOpen = () => {
-        let lsClients = localStorage.getItem('clientsRepo');
-        let clients = lsClients != null ? JSON.parse(lsClients) : [];
-        setClientRepository(clients);
         setShow(true);
+        let lsClients = localStorage.getItem('clientsRepo');
+        let clients = lsClients != null && lsClients.length > 0 ? JSON.parse(lsClients) : [];
+        setClientRepository(clients);
     };
     const handleClose = () => {
         setShow(false)
@@ -168,24 +174,22 @@ export default function Clientes() {
                     </Modal.Header>
                     <Modal.Body>
                         <ul>
-                            {clientRepository.map((repository, index) => {
-                                return (
-                                    <li key={index}>
-                                        <GS.Row className="row">
-                                            <GS.Col className="col-md-10">
-                                                <a href="#" onClick={select(index)}>
-                                                    {repository[0] + " - " + repository[1]}
-                                                </a>
-                                            </GS.Col>
-                                            <GS.Col className="col-md-2">
-                                                <a href="#" onClick={remove(index)}>
-                                                    Excluir
-                                                </a>
-                                            </GS.Col>
-                                        </GS.Row>
-                                    </li>
-                                )
-                            })}
+                            {(clientRepository || []).map((repository, index) => (
+                                <li key={index}>
+                                    <GS.Row className="row">
+                                        <GS.Col className="col-10">
+                                            <a href="#" onClick={() => select(index)}>
+                                                {repository[0] + " - " + repository[1]}
+                                            </a>
+                                        </GS.Col>
+                                        <GS.Col className="col-2">
+                                            <a href="#" onClick={() => remove(index)}>
+                                                Excluir
+                                            </a>
+                                        </GS.Col>
+                                    </GS.Row>
+                                </li>
+                            ))}
                         </ul>
                     </Modal.Body>
                     <Modal.Footer>

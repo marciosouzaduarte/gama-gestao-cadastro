@@ -26,7 +26,7 @@ export default function Produtos() {
         } else {
             // Se tiver valor no código edita os dados
             let lsProducts = localStorage.getItem('productsRepo');
-            let products = lsProducts != null ? JSON.parse(lsProducts) : [];
+            let products = lsProducts != null && lsProducts.length > 0 ? JSON.parse(lsProducts) : [];
             if (products.length > 0 && code !== "") {
                 let index = code - 1;
                 let product = products[index];
@@ -47,14 +47,14 @@ export default function Produtos() {
     // Seleciona o producte
     function select(index) {
         let lsProducts = localStorage.getItem('productsRepo');
-        let products = lsProducts != null ? JSON.parse(lsProducts) : [];
+        let products = lsProducts != null && lsProducts.length > 0 ? JSON.parse(lsProducts) : [];
         let product = products.filter((element, i) => {
             return index == i;
         });
 
-        setCode(product[0]);
-        setName(product[1]);
-        setCategory(product[2]);
+        setCode(product[0][0]);
+        setName(product[0][1]);
+        setCategory(product[0][2]);
 
         handleClose();
     }
@@ -62,7 +62,7 @@ export default function Produtos() {
     // Remove o producte do array
     function remove(index) {
         let lsProducts = localStorage.getItem('productsRepo');
-        let products = lsProducts != null ? JSON.parse(lsProducts) : [];
+        let products = lsProducts != null && lsProducts.length > 0 ? JSON.parse(lsProducts) : [];
         products = products.filter((element, i) => {
             return i != index;
         });
@@ -74,7 +74,7 @@ export default function Produtos() {
     const [show, setShow] = useState(false);
     const handleOpen = () => {
         let lsProducts = localStorage.getItem('productsRepo');
-        let products = lsProducts != null ? JSON.parse(lsProducts) : [];
+        let products = lsProducts != null && lsProducts.length > 0 ? JSON.parse(lsProducts) : [];
         setProductRepository(products);
         setShow(true);
     };
@@ -145,24 +145,22 @@ export default function Produtos() {
                     </Modal.Header>
                     <Modal.Body>
                         <ul>
-                            {productRepository.map((repository, index) => {
-                                return (
-                                    <li key={index}>
-                                        <GS.Row className="row">
-                                            <GS.Col className="col-md-10">
-                                                <a href="#" onClick={select(index)}>
-                                                    {repository[0] + " - " + repository[1]}
-                                                </a>
-                                            </GS.Col>
-                                            <GS.Col className="col-md-2">
-                                                <a href="#" onClick={remove(index)}>
-                                                    Excluir
-                                                </a>
-                                            </GS.Col>
-                                        </GS.Row>
-                                    </li>
-                                )
-                            })}
+                            {productRepository.map((repository, index) => (
+                                <li key={index}>
+                                    <GS.Row className="row">
+                                        <GS.Col className="col-10">
+                                            <a href="#" onClick={() => select(index)}>
+                                                {repository[0] + " - " + repository[1]}
+                                            </a>
+                                        </GS.Col>
+                                        <GS.Col className="col-2">
+                                            <a href="#" onClick={() => remove(index)}>
+                                                Excluir
+                                            </a>
+                                        </GS.Col>
+                                    </GS.Row>
+                                </li>
+                            ))}
                         </ul>
                     </Modal.Body>
                     <Modal.Footer>
