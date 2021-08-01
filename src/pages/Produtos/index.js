@@ -12,6 +12,12 @@ export default function Produtos() {
     const [category, setCategory] = useState('');
     const [productRepository, setProductRepository] = useState([]);
 
+    useEffect(() => {
+        let lsProducts = localStorage.getItem('productsRepo');
+        let products = lsProducts != null && lsProducts.length > 0 ? JSON.parse(lsProducts) : [];
+        setProductRepository(products);
+    }, []);
+
     // Método para limpar os campos do formulário
     function clear() {
         setCode('');
